@@ -31,7 +31,12 @@ class BigQuery:
         args["write_disposition"] = WRITE_DISPOSITION.get(write_type)
         return bigquery.LoadJobConfig(**args)
 
-    def run_query(self, query, return_to_df: bool = False) -> Tuple[None, pd.DataFrame]:
+    def run_query(
+        self, query: str, query_kwargs: dict = None, return_to_df: bool = False
+    ) -> Tuple[None, pd.DataFrame]:
+        if os.path.isdir(query):
+            query = read_file(query, **query_kwargs)
+
         result = self.client.query(query)
         if return_to_df:
             return result.to_dataframe()
