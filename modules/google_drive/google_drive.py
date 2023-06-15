@@ -1,4 +1,4 @@
-from .constants import SCOPES, EXT_TYPES
+from .constants import *
 
 import os
 import google.auth
