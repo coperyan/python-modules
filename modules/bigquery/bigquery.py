@@ -20,16 +20,23 @@ class BigQuery:
     ) -> bigquery.LoadJobConfig:
         args = {}
         if schema:
-            args["schema"] = [bigquery.SchemaField(**d) for d in schema]
+            if type(schema[0]) == dict:
+                args["schema"] = [bigquery.SchemaField(**d) for d in schema]
+            elif type(schema[0]) == tuple:
+                args["schema"] = [
+                    bigquery.SchemaField(name=d[0], field_type=d[1], mode=d[2])
+                    for d in schema
+                ]
         else:
             args["autodetect"] = True
 
-        args["source_format":] = SOURCE_FORMAT.get(os.path.splitext(gcs_path)[1])
+        args["source_format"] = SOURCE_FORMAT.get(os.path.splitext(gcs_path)[1])
         if args["source_format"] == bigquery.SourceFormat.CSV:
             args["skip_leading_rows"] = 1
 
         args["write_disposition"] = WRITE_DISPOSITION.get(write_type)
-        return bigquery.LoadJobConfig(**args)
+        lj = bigquery.LoadJobConfig(**args)
+        return lj
 
     def run_query(
         self, query: str, query_kwargs: dict = None, return_to_df: bool = False
@@ -84,3 +91,4 @@ class BigQuery:
         extract = self.client.extract_table(
             source=source, destination_uris=destination_uris
         )
+        extract.result()

@@ -24,12 +24,12 @@ class GoogleCloudStorage:
     def upload_file(
         self, bucket: str, file_path: str, gcs_path: str, chunk_size: int = CHUNK_SIZE
     ):
-        self._validate_bucket()
+        self._validate_bucket(bucket=bucket)
         blob = self.bucket.blob(gcs_path, chunk_size=chunk_size)
         blob.upload_from_filename(file_path)
 
     def download_file(self, bucket: str, gcs_path: str, local_path: str):
-        self._validate_bucket()
+        self._validate_bucket(bucket=bucket)
         blob = self.bucket.blob(gcs_path)
         if os.path.isdir(local_path):
             local_path = os.path.join(local_path, os.path.basename(gcs_path))

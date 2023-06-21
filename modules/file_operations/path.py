@@ -3,6 +3,7 @@ import os
 
 def list_files(
     path: str,
+    contains: str,
     recursive: bool = False,
     exclude_files: list = None,
     exclude_dirs: bool = True,
@@ -16,6 +17,9 @@ def list_files(
     else:
         for f in os.listdir(path):
             files.append(os.path.join(path, f))
+
+    if contains:
+        files = [f for f in files if contains in os.path.basename(f)]
 
     if exclude_dirs:
         files = [f for f in files if not os.path.isdir(f)]
