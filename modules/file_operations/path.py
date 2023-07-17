@@ -9,6 +9,17 @@ def list_files(
     exclude_dirs: bool = True,
     exclude_ext: list = None,
 ) -> list:
+    """List files in directory
+    Params:
+        path: str of relative path
+        contains: keyword that must be contained in filename
+        recursive: search within subfolders, dirs, etc
+        exclude_files: file (basenames) to exclude
+        exclude_dirs: file (subdirs) to exclude
+        exclude_ext: file (extensions) to exclude
+    Returns:
+        list of full filenames
+    """
     files = []
     if recursive:
         for root, dirs, files in os.walk(path):

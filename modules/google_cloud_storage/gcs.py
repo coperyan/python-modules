@@ -7,6 +7,7 @@ from google.cloud import storage
 
 class GoogleCloudStorage:
     def __init__(self, project: str = PROJECT, bucket: str = BUCKET):
+        """Initializes client object"""
         self.host_project = project
         self.client = storage.Client(project=project)
         self.bucket = self.client.bucket(bucket)

@@ -12,6 +12,7 @@ from google.api_core.exceptions import BadRequest
 
 class BigQuery:
     def __init__(self, project: str = PROJECT):
+        """Initializes client object"""
         self.project = project
         self.client = bigquery.Client(project=project)
 
@@ -41,10 +42,17 @@ class BigQuery:
     def run_query(
         self, query: str, query_kwargs: dict = None, return_to_df: bool = False
     ) -> Tuple[None, pd.DataFrame]:
-        if os.path.isdir(query):
+        """Executes query in BigQuery.
+        Params:
+            query: query can be relative path to file or actual query text.
+            query_kwargs: Kwargs can be used to format parameters in query file
+            return_to_df: whether to return Pandas dataframe
+        """
+        if os.path.isfile(query):
             query = read_file(query, **query_kwargs)
 
         result = self.client.query(query)
+        result.result()
         if return_to_df:
             return result.to_dataframe()
 
@@ -58,6 +66,16 @@ class BigQuery:
         schema: list = None,
         write_type: str = WRITE_TYPE,
     ) -> None:
+        """Loads file(s) from Google Cloud Storage to BigQuery
+        Params:
+            bucket: str of gcs bucket
+            gcs_path: str path in gcs bucket (can use wildcard)
+            table_project: str GCP project name
+            table_dataset: str GCP dataset name
+            table_name: str table name
+            schema: list of tuples (column name, column type, column mode)
+            write_type: truncate, append, replace
+        """
         job_config = self._build_job_config(
             gcs_path=gcs_path, write_type=write_type, schema=schema
         )
@@ -80,6 +98,15 @@ class BigQuery:
         table_dataset: str,
         table_name: str,
     ) -> None:
+        """
+        Exports table to Google Cloud Storage
+        Params:
+            bucket: str of gcs bucket
+            gcs_path: str path in gcs bucket (can use wildcard)
+            table_project: str GCP project name
+            table_dataset: str GCP dataset name
+            table_name: str table name
+        """
         if os.path.isdir(gcs_path):
             gcs_path = f"{gcs_path}/{table_project}_{table_dataset}_{table_name}_{dt_now(format_type='numeric_date')}.csv"
 
