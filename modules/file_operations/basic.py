@@ -12,7 +12,7 @@ def copy_file(old_path: str, new_path: str) -> None:
     shutil.copy(old_path, new_path)
 
 
-def read_file(file_path: str, replace_str: dict, **kwargs) -> str:
+def read_file(file_path: str, replace_str: dict = {}, **kwargs) -> str:
     """Reads file w/ kwargs or replace str if needed
     Params:
         file_path
@@ -30,3 +30,17 @@ def read_file(file_path: str, replace_str: dict, **kwargs) -> str:
 def get_file_size_mb(file_path):
     """Get file size in MB"""
     return round(os.path.getsize(file_path) / 1024.00 / 1024.00, 2)
+
+
+def get_file_ext(file: str) -> str:
+    return os.path.splitext(file)[1].replace(".", "")
+
+
+def get_file_info(file: str) -> dict:
+    return {
+        "path": file,
+        "dir": os.path.dirname(file),
+        "name": os.path.basename(file),
+        "nameonly": os.path.basename(file).replace(os.path.splitext(file)[1], ""),
+        "ext": os.path.splitext(file)[1].replace(".", ""),
+    }

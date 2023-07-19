@@ -4,6 +4,9 @@ from .constants import *
 import os
 from google.cloud import storage
 
+storage.blob._DEFAULT_CHUNKSIZE = 5 * 1024 * 1024  # 5 MB
+storage.blob._MAX_MULTIPART_SIZE = 5 * 1024 * 1024  # 5 MB
+
 
 class GoogleCloudStorage:
     def __init__(self, project: str = PROJECT, bucket: str = BUCKET):
@@ -27,7 +30,7 @@ class GoogleCloudStorage:
     ):
         self._validate_bucket(bucket=bucket)
         blob = self.bucket.blob(gcs_path, chunk_size=chunk_size)
-        blob.upload_from_filename(file_path)
+        blob.upload_from_filename(file_path, timeout=300)
 
     def download_file(self, bucket: str, gcs_path: str, local_path: str):
         self._validate_bucket(bucket=bucket)

@@ -40,7 +40,7 @@ class BigQuery:
         return lj
 
     def run_query(
-        self, query: str, query_kwargs: dict = None, return_to_df: bool = False
+        self, query: str, query_kwargs: dict = {}, return_to_df: bool = False
     ) -> Tuple[None, pd.DataFrame]:
         """Executes query in BigQuery.
         Params:

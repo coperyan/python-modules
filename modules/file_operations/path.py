@@ -3,7 +3,7 @@ import os
 
 def list_files(
     path: str,
-    contains: str,
+    contains: str = None,
     recursive: bool = False,
     exclude_files: list = None,
     exclude_dirs: bool = True,
