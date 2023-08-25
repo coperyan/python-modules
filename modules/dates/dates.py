@@ -27,3 +27,7 @@ def get_dates_in_range(min_date: str, max_date: str = now("standard_date")) -> l
 def convert_epoch_ms_to_dt(epoch_ms: Tuple[float, int]) -> datetime:
     """Converts timestamps to dt object"""
     return datetime.fromtimestamp(epoch_ms / 1000.0)
+
+
+def x_days_ago(days: int = 0, format_type: str = "standard_date") -> str:
+    return (datetime.now() - timedelta(days=days)).strftime(format_type)
