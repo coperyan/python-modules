@@ -16,6 +16,10 @@ class BigQuery:
         self.project = project
         self.client = bigquery.Client(project=project)
 
+    def set_project(self, project: str):
+        self.project = project
+        self.client = bigquery.Client(project=project)
+
     def _build_job_config(
         self, gcs_path: str, write_type: str, schema: list = None
     ) -> bigquery.LoadJobConfig:
