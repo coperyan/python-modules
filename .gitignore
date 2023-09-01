@@ -2,3 +2,5 @@
 *.pyc
 *config.py
 *.DS_Store
+
+*example.json
