@@ -16,7 +16,11 @@ class BigQuery:
         self.project = project
         self.client = bigquery.Client(project=project)
 
+<<<<<<< Updated upstream
     def set_project(self, project: str):
+=======
+    def set_project(self, project: str) -> None:
+>>>>>>> Stashed changes
         self.project = project
         self.client = bigquery.Client(project=project)
 
