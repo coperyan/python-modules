@@ -2,7 +2,7 @@ import os
 import json
 import requests
 
-from config import CHANNELS
+from .config import CHANNELS
 
 CHANNEL_LIST = list(CHANNELS.keys())
 
