@@ -44,16 +44,3 @@ class MSTeamsMessage:
             print("\n")
             print(body)
             print(resp.text)
-
-
-test = MSTeamsMessage("DC3Analytics")
-test.send(
-    job_name="DC3Test",
-    run_time="7/4/1776 12:00 AM",
-    failure_time="12/1/1783 12:00 PM",
-    run_time_min="10000",
-    retries="5",
-    step_num="99",
-    step_name="Test",
-    message="SELECT * FROM sys.tables;",
-)
