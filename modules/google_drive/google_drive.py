@@ -9,6 +9,22 @@ from googleapiclient.http import MediaFileUpload
 
 
 def upload_file(file_path: str, folder_id: str):
+    """Upload local file to a Google Drive folder
+    
+
+    Parameters
+    ----------
+        file_path : str
+            path:to:local:file
+        folder_id : str
+            Google Drive Folder ID
+
+    Returns
+    -------
+        str
+            File ID of upload
+        
+    """
     mimetype = EXT_TYPES.get(os.path.parsext(file_path)[1])
 
     creds = service_account.Credentials.from_service_account_file(
