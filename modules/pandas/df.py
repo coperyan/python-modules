@@ -4,6 +4,16 @@ from typing import Union, List, Dict
 
 
 def replace_bad_vals(df: pd.DataFrame) -> pd.DataFrame:
+    """Replace newline characters in dataframe
+
+    Parameters
+    ----------
+        df : pd.DataFrame
+
+    Returns
+    -------
+        pd.DataFrame
+    """
     for col in [x for x in df.columns.values if df[x].dtype == "object"]:
         rowct = len(
             df[
@@ -20,6 +30,18 @@ def replace_bad_vals(df: pd.DataFrame) -> pd.DataFrame:
 
 
 def col_to_datetime(df: pd.DataFrame, col: Union[str, list]) -> pd.DataFrame:
+    """Format pandas column(s) as datetime
+
+    Parameters
+    ----------
+        df : pd.DataFrame
+        col : Union[str, list]
+            str or list of str (column names)
+
+    Returns
+    -------
+        pd.DataFrame
+    """
     if isinstance(col, str):
         col = [col]
 
@@ -32,6 +54,21 @@ def col_to_datetime(df: pd.DataFrame, col: Union[str, list]) -> pd.DataFrame:
 def limit_df_fields(
     df: pd.DataFrame, fields: list, default_cols: dict = None
 ) -> pd.DataFrame:
+    """Standardize fields in dataframe
+
+    Parameters
+    ----------
+        df : pd.DataFrame
+        fields : list
+            list of fields to keep
+        default_cols (dict, optional): dict, default None
+            dictionary of columns & default values to add if missing
+            ex. `{col:default_val}`
+
+    Returns
+    -------
+        pd.DataFrame
+    """
     cols_to_drop = [col for col in df.columns.values if col not in fields]
     df.drop(columns=cols_to_drop, inplace=True)
     if default_cols:
@@ -54,6 +91,34 @@ def nested_dict_to_df(
     rename_patterns: dict = None,
     add_fields: dict = None,
 ) -> pd.DataFrame:
+    """Parses a nested array of dict to a pandas dataframe
+
+    Parameters
+    ----------
+        raw_data : Union[List, Dict]
+        remove_value_types (list, optional): list, default None
+            types to remove from nested dictionaries ex. `list`
+        df_params (dict, optional): dict, default None
+            parameters to pass to pd.json_normalize
+            https://pandas.pydata.org/docs/reference/api/pandas.json_normalize.html
+        rename_cols (dict, optional): dict, default None
+            dict of column renames
+            ex. `{oldname:newname}`
+        delete_fields (list, optional): list, default None
+            fields to drop from the df entirely
+        index_cols (dict, optional): dict, default None
+            list of cols to be considered 'index' -- move to front of order
+        rename_patterns (dict, optional): dict, default None
+            dictionary of rename_patterns to apply to column names
+            ex. `{'dict.col':'col'} would rename dict.col.name to col.name`
+        add_fields (dict, optional): dict, default None
+            dictionary of columns & default values to add if missing
+            ex. `{col:default_val}`
+
+    Returns
+    -------
+        pd.DataFrame
+    """
     if type(df_params) == list:
         df = raw_data.copy()
         for df_param in df_params:

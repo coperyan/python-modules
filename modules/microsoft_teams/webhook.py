@@ -31,6 +31,15 @@ class MSTeamsMessage:
                         self._build_msg_body(o, kwargs)
 
     def send(self, **kwargs):
+        """Send Webhook Message to MS Teams Channel
+
+        Parameters
+        ----------
+            kwargs : kwargs
+                Used to build the message body
+                Parameters in message body JSON will be format_mapped
+
+        """
         body = self.msg_body.copy()
         self._build_msg_body(body, kwargs)
 
