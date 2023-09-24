@@ -1,1 +1,1 @@
-from api import MSGraphClient
+from .client import MSGraphClient

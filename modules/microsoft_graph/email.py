@@ -17,14 +17,14 @@ class MSGraphMessage:
         self,
         client: GraphClient,
         mailbox: str,
-        to_recipients: list = None,
-        cc_recipients: list = None,
-        bcc_recipients: list = None,
+        to_recipients: list = [],
+        cc_recipients: list = [],
+        bcc_recipients: list = [],
         subject: str = "",
         body: str = "",
         body_type: str = "Text",
-        file_attachments: list = None,
-        img_attachments: list = None,
+        file_attachments: list = [],
+        img_attachments: list = [],
         importance: str = "normal",
     ):
         self.client = client
@@ -45,8 +45,8 @@ class MSGraphMessage:
         self._validate_imgs()
         self.send()
 
-    def _validate_mailbox(self, mailbox: str):
-        if mailbox not in VALID_MAILBOXES:
+    def _validate_mailbox(self):
+        if self.mailbox not in VALID_MAILBOXES:
             raise ValueError("Invalid mailbox string passed!")
 
     def _validate_recipients(self):
@@ -192,7 +192,7 @@ class MSGraphMessage:
                 headers={"Content-Type": "application/json"},
             )
             num_tries += 1
-        if resp.status_code != 201:
+        if resp.status_code != 202:
             raise Exception(f"{resp.status_code}: {resp.text}")
 
     def send(self):

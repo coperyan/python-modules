@@ -5,3 +5,7 @@
 
 *example.json
 *test.py
+
+
+tests/
+!tests/__init__.py
