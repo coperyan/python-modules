@@ -3,11 +3,18 @@ import shutil
 
 
 def create_archive(source_path: str = None, format: str = "zip", base_name: str = None):
-    """Creates archive file from folder
-    Params:
-        source_path: folder to zip
-        format: zip, rar, etc
-        base_name: name of file
+    """Create RAR/ZIP archive 
+
+    Parameters
+    ----------
+        source_path (str, optional): str, default None
+            os path to zip -- defaults to current dir if None
+        format (str, optional): str, default zip
+            archive extension
+        base_name (str, optional): str, default None
+            name of archive file
+                (defaults to last folder in path if None
+
     """
     if not base_name:
         if os.path.isdir(source_path):
