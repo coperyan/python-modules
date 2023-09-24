@@ -1,17 +1,24 @@
 # python-modules
 
-## [BigQuery](modules/bigquery)
-
-## [Dates](modules/dates)
-
-## [File Operations](modules/file_operations)
-
-## [Google Cloud Storage](modules/google_cloud_storage)
-
-## [Google Drive](modules/google_drive)
-
-## [MSSQL](modules/mssql)
-
-## [Slack](modules/slack)
-
-## [Twilio](modules/twilio)
+- [modules](./modules)
+  - [azure_cloud_storage](./modules/azure_cloud_storage)
+  - [bigquery](./modules/bigquery)
+  - [dates](./modules/dates)
+  - [file_operations](./modules/file_operations)
+  - [google_cloud_storage](./modules/google_cloud_storage)
+  - [google_drive](./modules/google_drive)
+  - [google_places](./modules/google_places)
+  - [html](./modules/html)
+  - [json](./modules/json)
+  - [math](./modules/math)
+  - [microsoft_excel](./modules/microsoft_excel)
+  - [microsoft_graph](./modules/microsoft_graph)
+  - [microsoft_teams](./modules/microsoft_teams)
+  - [mssql](./modules/mssql)
+  - [pandas](./modules/pandas)
+  - [requests](./modules/requests)
+  - [sftp](./modules/sftp)
+  - [slack](./modules/slack)
+  - [twilio](./modules/twilio)
+  - [xml](./modules/xml)
+  - [yelp](./modules/yelp)
