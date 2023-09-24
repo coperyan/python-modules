@@ -23,6 +23,24 @@ class BigQuery:
     def _build_job_config(
         self, gcs_path: str, write_type: str, schema: list = None
     ) -> bigquery.LoadJobConfig:
+        """Build BigQuery LoadJobConfig
+
+        Parameters
+        ----------
+            gcs_path : str
+                path within google_cloud_storage bucket, used to identify file extension
+            write_type : str
+                truncate, append, create
+            schema (list, optional): list, default None
+                list of tuple or list of dict
+                    ex. `[("colname","coltype","colmode")]` OR
+                    ex. `[{"name":"colname","type":"STRING","mode":"NULLABLE"}]`
+
+        Returns
+        -------
+            bigquery.LoadJobConfig
+                Load job config used in method `load_gcs_to_table`
+        """
         args = {}
         if schema:
             if type(schema[0]) == dict:
@@ -46,11 +64,22 @@ class BigQuery:
     def run_query(
         self, query: str, query_kwargs: dict = {}, return_to_df: bool = False
     ) -> Tuple[None, pd.DataFrame]:
-        """Executes query in BigQuery.
-        Params:
-            query: query can be relative path to file or actual query text.
-            query_kwargs: Kwargs can be used to format parameters in query file
-            return_to_df: whether to return Pandas dataframe
+        """Run Query in BigQuery
+
+        Parameters
+        ----------
+            query : str
+                Str of SQL Query OR path to file w/ query str
+            query_kwargs (dict, optional): dict, default {}
+                ex. query `SELECT {col} FROM table LIMIT 500;`
+                ex. kwargs `{col : colname}`
+            return_to_df (bool, optional): bool, default False
+                return to dataframe? else just run query
+
+        Returns
+        -------
+            Tuple[None, pd.DataFrame]
+                None if return_to_df = false otherwise pd.DataFrame of results
         """
         if os.path.isfile(query):
             query = read_file(query, **query_kwargs)
@@ -70,15 +99,28 @@ class BigQuery:
         schema: list = None,
         write_type: str = WRITE_TYPE,
     ) -> None:
-        """Loads file(s) from Google Cloud Storage to BigQuery
-        Params:
-            bucket: str of gcs bucket
-            gcs_path: str path in gcs bucket (can use wildcard)
-            table_project: str GCP project name
-            table_dataset: str GCP dataset name
-            table_name: str table name
-            schema: list of tuples (column name, column type, column mode)
-            write_type: truncate, append, replace
+        """Load File(s) from Google Cloud Storage to BigQuery Table
+
+        Parameters
+        ----------
+            bucket : str
+                google_cloud_storage bucket name
+            gcs_path : str
+                google_cloud_storage bucket sub-path
+                    can be direct path: ex. `bucketFolder/bucketSubFolder/file.csv`
+                    can be wildcard path: ex `bucketFolder/bucketSubFolder/.*json`
+            table_project : str
+                bigquery project name
+            table_dataset : str
+                bigquery dataset name
+            table_name : str
+                bigquery table name
+            schema (list, optional): list, default None
+                list of tuple or list of dict
+                    ex. `[("colname","coltype","colmode")]` OR
+                    ex. `[{"name":"colname","type":"STRING","mode":"NULLABLE"}]`
+            write_type (str, optional): str, default WRITE_TYPE
+                truncate, append, create
         """
         job_config = self._build_job_config(
             gcs_path=gcs_path, write_type=write_type, schema=schema
@@ -102,14 +144,20 @@ class BigQuery:
         table_dataset: str,
         table_name: str,
     ) -> None:
-        """
-        Exports table to Google Cloud Storage
-        Params:
-            bucket: str of gcs bucket
-            gcs_path: str path in gcs bucket (can use wildcard)
-            table_project: str GCP project name
-            table_dataset: str GCP dataset name
-            table_name: str table name
+        """Export BigQuery Table to Google Cloud Storage
+
+        Parameters
+        ----------
+            bucket : str
+                google_cloud_storage bucket name
+            gcs_path : str
+                bucket sub-path to store file in
+            table_project : str
+                bigquery project name
+            table_dataset : str
+                bigquery dataset name
+            table_name : str
+                bigquery table name
         """
         if os.path.isdir(gcs_path):
             gcs_path = f"{gcs_path}/{table_project}_{table_dataset}_{table_name}_{dt_now(format_type='numeric_date')}.csv"
